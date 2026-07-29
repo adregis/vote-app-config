@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vote-app
+  namespace: openshift-gitops # Namespace padrao do Argo CD no OpenShift
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/adregis/vote-app-config.git' # Seu novo repo
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: app-vote
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
