@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vote-app-dev
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/adregis/vote-app-config.git'
+    targetRevision: HEAD
+    path: k8s/dev       # <--- ArgoCD agora olha so para a pasta de DEV
+    directory:
+      recurse: true
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: app-vote-dev  # <--- Destino e o novo namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
