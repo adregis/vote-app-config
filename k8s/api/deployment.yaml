@@ -16,7 +16,7 @@ spec:
         app: pipelines-vote-api
     spec:
       containers:
-        - image: quay.io/rh-ee-afonseca/vote-api:latest
+        - image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-api:e8c9b112a06b12100449d43c6f5b7f628c7f14a4
           imagePullPolicy: Always
           name: pipelines-vote-api
           ports:
