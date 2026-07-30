@@ -8,12 +8,12 @@ spec:
   source:
     repoURL: 'https://github.com/adregis/vote-app-config.git'
     targetRevision: HEAD
-    path: k8s/dev       # <--- ArgoCD agora olha so para a pasta de DEV
+    path: k8s/dev    
     directory:
       recurse: true
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: app-vote-dev  # <--- Destino e o novo namespace
+    namespace: app-vote-dev 
   syncPolicy:
     automated:
       prune: true
