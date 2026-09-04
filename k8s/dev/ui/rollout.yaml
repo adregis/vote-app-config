@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  labels:
+    app: pipelines-vote-ui
+  name: pipelines-vote-ui
+  namespace: app-vote-dev
+spec:
+  replicas: 2 # Recomendado ter 2+ réplicas para divisão do Canary
+  revisionHistoryLimit: 5
+  strategy:
+    canary:
+      steps:
+        - setWeight: 20          # 20% do tráfego vai para a nova versão
+        - pause: { duration: 1m } # Pausa para verificação de métricas/logs
+        - setWeight: 50          # Eleva para 50%
+        - pause: { duration: 2m } # Pausa final de segurança
+  selector:
+    matchLabels:
+      app: pipelines-vote-ui
+  template:
+    metadata:
+      labels:
+        app: pipelines-vote-ui
+    spec:
+      containers:
+        - name: pipelines-vote-ui
+          image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-ui:400f860b973ca83497bbde544f896c708589acda
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 9090
+              protocol: TCP
+          env:
+            - name: VOTING_API_SERVICE_HOST
+              value: pipelines-vote-api
+            - name: VOTING_API_SERVICE_PORT
+              value: "9000"
