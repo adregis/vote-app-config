@@ -6,15 +6,15 @@ metadata:
   name: pipelines-vote-ui
   namespace: app-vote-dev
 spec:
-  replicas: 2 # Recomendado ter 2+ réplicas para divisão do Canary
+  replicas: 4
   revisionHistoryLimit: 5
   strategy:
     canary:
       steps:
-        - setWeight: 20          # 20% do tráfego vai para a nova versão
-        - pause: { duration: 1m } # Pausa para verificação de métricas/logs
-        - setWeight: 50          # Eleva para 50%
-        - pause: { duration: 2m } # Pausa final de segurança
+        - setWeight: 20  # Envia 20% do tráfego para a nova versão
+        - pause: {}      # Pausa indefinidamente até aprovação manual!
+        - setWeight: 50  # Envia 50% do tráfego
+        - pause: { duration: 2m } # Pausa automática de 2 minutos antes de finalizar (100%)
   selector:
     matchLabels:
       app: pipelines-vote-ui
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: pipelines-vote-ui
-          image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-ui:400f860b973ca83497bbde544f896c708589acda
+          image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-ui:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
