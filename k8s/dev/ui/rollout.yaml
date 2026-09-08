@@ -9,12 +9,10 @@ spec:
   replicas: 4
   revisionHistoryLimit: 5
   strategy:
-    canary:
-      steps:
-        - setWeight: 20  # Envia 20% do tráfego para a nova versão
-        - pause: {}      # Pausa indefinidamente até aprovação manual!
-        - setWeight: 50  # Envia 50% do tráfego
-        - pause: { duration: 2m } # Pausa automática de 2 minutos antes de finalizar (100%)
+    blueGreen:
+      activeService: pipelines-vote-ui         # Service principal de produção
+      previewService: pipelines-vote-ui-preview # Service para validação prévia
+      autoPromotionEnabled: false # Exige comando manual para trocar as chaves
   selector:
     matchLabels:
       app: pipelines-vote-ui
