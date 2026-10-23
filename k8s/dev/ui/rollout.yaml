@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: pipelines-vote-ui
-          image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-ui:30723934e09ed5e314c5ffaaa664e441cb511a32
+          image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/pipelines-vote-ui:6614e095faf5181f3672d111efb1619ff31e86ee
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
